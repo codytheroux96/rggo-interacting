@@ -16,9 +16,9 @@ type List []item
 
 func (l *List) Add(task string) {
 	t := item{
-		Task: task,
-		Done: false,
-		CreatedAt: time.Now(),
+		Task:        task,
+		Done:        false,
+		CreatedAt:   time.Now(),
 		CompletedAt: time.Time{},
 	}
 
