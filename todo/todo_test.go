@@ -1,7 +1,7 @@
 package todo_test
 
 import (
-	//"os"
+	"os"
 	"testing"
 
 	"github.com/codytheroux96/rggo-interacting"
@@ -64,5 +64,35 @@ func TestDelete(t *testing.T) {
 
 	if l[1].Task != tasks[2]{
 		t.Errorf("expected %q; got %q instead", tasks[2], l[1].Task)
+	}
+}
+
+func TestGetAndSave(t *testing.T) {
+	l1 := todo.List{}
+	l2 := todo.List{}
+
+	taskName := "New Task"
+	l1.Add(taskName)
+
+	if l1[0].Task != taskName {
+		t.Errorf("expected %q; got %q instead", taskName, l1[0].Task)
+	}
+
+	tf, err := os.CreateTemp("", "")
+	if err != nil {
+		t.Fatalf("error creating temp file %s", err)
+	}
+	defer os.Remove(tf.Name())
+
+	if err := l1.Save(tf.Name()); err != nil {
+		t.Fatalf("error saving list to file: %s", err)
+	}
+
+	if err := l2.Get(tf.Name()); err != nil {
+		t.Fatalf("error getting list from file: %s", err)
+	}
+
+	if l1[0].Task != l2[0].Task {
+		t.Errorf("task %q should match %q task", l1[0].Task, l2[0].Task)
 	}
 }
