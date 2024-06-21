@@ -91,3 +91,15 @@ func (l *List) String() string {
 	}
 	return formatted
 }
+
+func (l *List) Verbose(i int) (string, error) {
+	ls := *l
+	
+	if i <= 0 || i > len(ls) {
+		return "", fmt.Errorf("item %d does not exist", i)
+	}
+
+	formatted := fmt.Sprintf("The task: %s, was created at: %s", ls[i-1].Task, ls[i-1].CreatedAt)
+
+	return formatted, nil
+}

@@ -18,6 +18,7 @@ func main() {
 	list := flag.Bool("list", false, "List all tasks")
 	complete := flag.Int("complete", 0, "Item to be completed")
 	delete := flag.Int("delete", 0, "Item to be deleted")
+	verbose := flag.Int("verbose", 0, "Displays when a task was created")
 
 	flag.Parse()
 
@@ -63,6 +64,13 @@ func main() {
 			fmt.Fprintln(os.Stderr, err)
 			os.Exit(1)
 		}
+	case *verbose > 0:
+		v, err := l.Verbose(*verbose)
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		fmt.Println(v)
 	default:
 		fmt.Fprintln(os.Stderr, "Invalid operation")
 		os.Exit(1)
