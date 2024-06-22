@@ -82,16 +82,25 @@ func getTask(r io.Reader, args ...string) (string, error) {
 		return strings.Join(args, " "), nil
 	}
 
+	var lines []string
 	s := bufio.NewScanner(r)
-	s.Scan()
+
+	for s.Scan() {
+		line := s.Text()
+		if line == "" {
+			break
+		}
+		lines = append(lines, line)
+	}
 
 	if err := s.Err(); err != nil {
 		return "", err
 	}
 
-	if len(s.Text()) == 0 {
+	input := strings.Join(lines, "\n")
+	if len(input) == 0 {
 		return "", fmt.Errorf("task cannot be blank")
 	}
 
-	return s.Text(), nil
+	return input, nil
 }
